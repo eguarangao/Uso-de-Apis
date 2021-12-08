@@ -121,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
 
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObjectdata = jsonArray.getJSONObject(i);
-                                ListDatos.add("name : " + jsonObjectdata.getString("name") + "\n" +
+                                ListDatos.add("id :"+ jsonObjectdata.getString("id")+"\n"+
+                                        "name : " + jsonObjectdata.getString("name") + "\n" +
                                         "email : " + jsonObjectdata.getString("email") + "\n" +
                                         "gender : " + jsonObjectdata.getString("gender") + " \n" +
                                         "status : " + jsonObjectdata.getString("status") + "\n\n");
