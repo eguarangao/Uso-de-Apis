@@ -35,17 +35,19 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
+    //declaracion de variables privadas
     Spinner spnr;
     TextView txtInfoLoad;
     RequestQueue rq;
     TextView txtvalor;
-    private String URL = "https://gorest.co.in/public/v1/users";
+    String URL = "https://gorest.co.in/public/v1/users";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //redireccionamos las variables a los controles correspondientes
         txtInfoLoad = findViewById(R.id.txt_info);
         txtvalor = findViewById(R.id.txt_valor);
         txtInfoLoad.setMovementMethod(new ScrollingMovementMethod());
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         rq = Volley.newRequestQueue(this);
     }
 
+    //metodo para agregar la informacion a nuestro spiner
     public void addSpinerInfo() {
         spnr = findViewById(R.id.spnr_apis);
         ArrayAdapter<CharSequence> loadSpiner =
@@ -110,23 +113,29 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void stringRequestVolley(String valor) {
+        // declaracion de ARRAY
         ArrayList<String> ListDatos = new ArrayList<String>();
+        // Objecto request al cual enviamos la URL y el Metodo a implementar
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 URL + "?id=" + valor, null,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            //declaramos un objecto jsonarray que nos servira como base
                             JSONArray jsonArray = response.getJSONArray("data");
 
                             for (int i = 0; i < jsonArray.length(); i++) {
+                                //Enviamos nuestro array al objeto
                                 JSONObject jsonObjectdata = jsonArray.getJSONObject(i);
+                                //añadimos los datos correspondientes
                                 ListDatos.add("id :"+ jsonObjectdata.getString("id")+"\n"+
                                         "name : " + jsonObjectdata.getString("name") + "\n" +
                                         "email : " + jsonObjectdata.getString("email") + "\n" +
                                         "gender : " + jsonObjectdata.getString("gender") + " \n" +
                                         "status : " + jsonObjectdata.getString("status") + "\n\n");
                             }
+                            //enviamos los datos a mostrar
                             txtInfoLoad.append(ListDatos.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -135,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 }, new com.android.volley.Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                //Monstramos un msj de error en caso de fallo
                 txtInfoLoad.append(error.toString());
             }
         });
@@ -142,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getApisBotton(View view) {
+
         txtInfoLoad.setText("");
         if (spnr.getSelectedItem().toString().toUpperCase().equals("Retrofit".toUpperCase())) {
             Toast.makeText(this, "Cargando...", Toast.LENGTH_SHORT).show();
